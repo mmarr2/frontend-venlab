@@ -15,29 +15,23 @@
     <v-main>
       <!-- Buttons for different tables -->
       <v-row class="pa-4" dense>
-        <v-btn color="secondary" class="ma-2" @click="currentTable = 'analysis'">
-          Analysis
+        <v-btn
+          color="secondary"
+          class="ma-2"
+          v-for="table in tables"
+          :key="table.value"
+          @click="loadTable(table.value)"
+        >
+          {{ table.label }}
         </v-btn>
-        <v-btn color="secondary" class="ma-2" @click="currentTable = 'box'">
-          Box
-        </v-btn>
-        <v-btn color="secondary" class="ma-2" @click="currentTable = 'boxpo'">
-          Boxpo
-        </v-btn>
-        <v-btn color="secondary" class="ma-2" @click="currentTable = 'log'">
-          Log
-        </v-btn>
-        <v-btn color="secondary" class="ma-2" @click="currentTable = 'sample'">
-          Sample
-        </v-btn>
-        <v-btn color="secondary" class="ma-2" @click="currentTable = 'threshold'">
-          Threshold
-        </v-btn>
-
       </v-row>
 
       <!-- Render the selected table -->
-      <DataTable :table="currentTable" />
+      <DataTable
+        :items="tableData.items"
+        :headers="tableData.headers"
+        v-if="tableData.items.length"
+      />
     </v-main>
   </v-app>
 </template>
@@ -45,6 +39,7 @@
 <script>
 import { ref, watch } from 'vue'
 import { useTheme } from 'vuetify'
+import axios from 'axios'
 import DataTable from './components/DataTable.vue'
 
 export default {
@@ -53,7 +48,37 @@ export default {
   setup() {
     const theme = useTheme()
     const isDark = ref(false)
-    const currentTable = ref('table1')
+    const tableData = ref({ items: [], headers: [] })
+
+    const tables = [
+      { label: 'Analysis', value: 'analysis' },
+      { label: 'Box', value: 'box' },
+      { label: 'Boxpo', value: 'boxpo' },
+      { label: 'Log', value: 'log' },
+      { label: 'Sample', value: 'sample' },
+      { label: 'Threshold', value: 'threshold' },
+    ]
+
+    const loadTable = async (tableName) => {
+      try {
+        const { data } = await axios.get(`http://localhost:8082/venlab/${tableName}`)
+        const headers = Object.keys(data[0] || {}).map((key) => ({
+          title: key,
+          value: key,
+        }))
+
+        tableData.value = {
+          items: data,
+          headers,
+        }
+      } catch (err) {
+        console.error(err)
+        tableData.value = { items: [], headers: [] }
+      }
+    }
+
+    // Initial load
+    loadTable(tables[0].value)
 
     watch(isDark, (newValue) => {
       theme.global.name.value = newValue ? 'dark' : 'light'
@@ -61,7 +86,9 @@ export default {
 
     return {
       isDark,
-      currentTable,
+      tableData,
+      tables,
+      loadTable,
     }
   },
 }
