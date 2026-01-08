@@ -1,29 +1,29 @@
 import axios from "axios";
 /* eslint-disable */
-class Sample {
+class Threshold {
   constructor(baseURL = "http://localhost:8082/venlab") {
     this.api = axios.create({ baseURL });
   }
 
   async getAll() {
-    return this.api.get("/sample");
+    return this.api.get("/threshold");
   }
 
   async getById(id) {
-    return this.api.get(`/sample/${id}`);
+    return this.api.get(`/threshold/${id}`);
   }
 
   async create(data) {
-    return this.api.post("/sample", data);
+    return this.api.post("/threshold", data);
   }
 
   async update(id, data) {
-    return this.api.put(`/sample/${id}`, data);
+    return this.api.put(`/threshold/${id}`, data);
   }
 
   async delete(id) {
-    return this.api.delete(`/sample/${id}`);
+    return this.api.delete(`/threshold/${id}`);
   }
 }
 
-export default Sample;
+export default Threshold;

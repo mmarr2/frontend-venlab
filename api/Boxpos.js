@@ -1,18 +1,16 @@
 import axios from "axios";
-
+/* eslint-disable */
 class Boxpos {
-  constructor(baseURL = "localhost:8082/venlab") {
-    this.api = axios.create({
-      baseURL: baseURL
-    });
-  }
+  constructor(baseURL = "http://localhost:8082/venlab") {
+      this.api = axios.create({ baseURL });
+    }
 
   async getAll() {
     return this.api.get("/boxpos");
   }
 
   async getById(id) {
-    return this.api.get(`/boxpos/${id}`);
+    return this.api.get(`/boxpos/${bId}/${bposId}`);
   }
 
   async create(data) {
@@ -20,12 +18,12 @@ class Boxpos {
   }
 
   async update(id, data) {
-    return this.api.put(`/boxpos/${id}`, data);
+    return this.api.put(`/boxpos/${bId}/${bposId}`, data);
   }
 
   async delete(id) {
-    return this.api.delete(`/boxpos/${id}`);
+    return this.api.delete(`/boxpos/${bId}/${bposId}`);
   }
 }
 
-export default Sample;
+export default Boxpos;

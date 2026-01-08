@@ -1,31 +1,29 @@
 import axios from "axios";
-
-class Sample {
-  constructor(baseURL) {
-    this.api = axios.create({
-      baseURL: baseURL
-    });
+/* eslint-disable */
+class Log {
+  constructor(baseURL = "http://localhost:8082/venlab") {
+    this.api = axios.create({ baseURL });
   }
 
   async getAll() {
-    return this.api.get("venlab/log");
+    return this.api.get("/log");
   }
 
   async getById(id) {
-    return this.api.get(`venlab/log/${id}`);
+    return this.api.get(`/log/${id}`);
   }
 
   async create(data) {
-    return this.api.post("venlab/log", data);
+    return this.api.post("/log", data);
   }
 
   async update(id, data) {
-    return this.api.put(`venlab/log/${id}`, data);
+    return this.api.put(`/log/${id}`, data);
   }
 
   async delete(id) {
-    return this.api.delete(`venlab/log/${id}`);
+    return this.api.delete(`/log/${id}`);
   }
 }
 
-export default Sample;
+export default Log;

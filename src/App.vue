@@ -4,33 +4,33 @@
       <v-app-bar-title>Vue Data Table</v-app-bar-title>
       <v-spacer></v-spacer>
       <v-switch
-        v-model="isDark"
-        hide-details
-        inset
-        :label="isDark ? 'Dark' : 'Light'"
-        class="ma-2"
-      ></v-switch>
+          v-model="isDark"
+          hide-details
+          inset
+          :label="isDark ? 'Dark' : 'Light'"
+          class="ma-2"
+      />
     </v-app-bar>
 
     <v-main>
-      <!-- Buttons for different tables -->
+      <!-- Buttons -->
       <v-row class="pa-4" dense>
         <v-btn
-          color="secondary"
-          class="ma-2"
-          v-for="table in tables"
-          :key="table.value"
-          @click="loadTable(table.value)"
+            v-for="table in tables"
+            :key="table.key"
+            class="ma-2"
+            color="secondary"
+            @click="loadTable(table.key)"
         >
           {{ table.label }}
         </v-btn>
       </v-row>
 
-      <!-- Render the selected table -->
+      <!-- DataTable -->
       <DataTable
-        :items="tableData.items"
-        :headers="tableData.headers"
-        v-if="tableData.items.length"
+          v-if="tableData.items.length"
+          :items="tableData.items"
+          :headers="tableData.headers"
       />
     </v-main>
   </v-app>
@@ -39,8 +39,15 @@
 <script>
 import { ref, watch } from 'vue'
 import { useTheme } from 'vuetify'
-import axios from 'axios'
 import DataTable from './components/DataTable.vue'
+
+// Axios-Klassen
+import Analysis from '../api/Analysis'
+import Box from '../api/Box'
+import BoxPos from '../api/Boxpos'
+import Log from '../api/Log'
+import Sample from '../api/Sample'
+import Threshold from '../api/Threshold'
 
 export default {
   name: 'App',
@@ -50,46 +57,57 @@ export default {
     const isDark = ref(false)
     const tableData = ref({ items: [], headers: [] })
 
-    const tables = [
-      { label: 'Analysis', value: 'analysis' },
-      { label: 'Box', value: 'box' },
-      { label: 'Boxpo', value: 'boxpo' },
-      { label: 'Log', value: 'log' },
-      { label: 'Sample', value: 'sample' },
-      { label: 'Threshold', value: 'threshold' },
-    ]
-
-    const loadTable = async (tableName) => {
-      try {
-        const { data } = await axios.get(`http://localhost:8082/venlab/${tableName}`)
-        const headers = Object.keys(data[0] || {}).map((key) => ({
-          title: key,
-          value: key,
-        }))
-
-        tableData.value = {
-          items: data,
-          headers,
-        }
-      } catch (err) {
-        console.error(err)
-        tableData.value = { items: [], headers: [] }
-      }
+    // Mapping: Button → Axios-Klasse
+    const apiMap = {
+      analysis: new Analysis(),
+      box: new Box(),
+      boxpo: new BoxPos(),
+      log: new Log(),
+      sample: new Sample(),
+      threshold: new Threshold()
     }
 
-    // Initial load
-    loadTable(tables[0].value)
+    const tables = [
+      { label: 'Analysis', key: 'analysis' },
+      { label: 'Box', key: 'box' },
+      { label: 'BoxPos', key: 'boxpo' },
+      { label: 'Log', key: 'log' },
+      { label: 'Sample', key: 'sample' },
+      { label: 'Threshold', key: 'threshold' }
+    ]
 
-    watch(isDark, (newValue) => {
-      theme.global.name.value = newValue ? 'dark' : 'light'
+    const loadTable = (key) => {
+      apiMap[key]
+          .getAll()
+          .then(response => {
+            const data = response.data || []
+
+            const headers = Object.keys(data[0] || {}).map(k => ({
+              title: k,
+              value: k
+            }))
+
+            tableData.value = { items: data, headers }
+          })
+          .catch(err => {
+            console.error(err)
+            tableData.value = { items: [], headers: [] }
+          })
+    }
+
+    // initial table
+    loadTable('analysis')
+
+    watch(isDark, val => {
+      theme.global.name.value = val ? 'dark' : 'light'
     })
 
     return {
       isDark,
-      tableData,
       tables,
-      loadTable,
+      tableData,
+      loadTable
     }
-  },
+  }
 }
 </script>
