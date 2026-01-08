@@ -21,7 +21,7 @@ class Threshold {
     return this.api.put(`/threshold/${id}`, data);
   }
 
-  async delete(id) {
+  async deleteById(id) {
     return this.api.delete(`/threshold/${id}`);
   }
 }

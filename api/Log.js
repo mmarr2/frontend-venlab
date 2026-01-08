@@ -21,7 +21,7 @@ class Log {
     return this.api.put(`/log/${id}`, data);
   }
 
-  async delete(id) {
+  async deleteById(id) {
     return this.api.delete(`/log/${id}`);
   }
 }

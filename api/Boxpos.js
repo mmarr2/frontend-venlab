@@ -21,7 +21,7 @@ class Boxpos {
     return this.api.put(`/boxpos/${bId}/${bposId}`, data);
   }
 
-  async delete(id) {
+  async deleteById(id) {
     return this.api.delete(`/boxpos/${bId}/${bposId}`);
   }
 }

@@ -21,7 +21,7 @@ class Analysis {
     return this.api.put(`/analysis/${id}`, data);
   }
 
-  async delete(id) {
+  async deleteById(id) {
     return this.api.delete(`/analysis/${id}`);
   }
 }
