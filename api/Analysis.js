@@ -1,7 +1,8 @@
 import axios from "axios";
+const backendUrl = "https://miristschwindelig-pnu4i.ondigitalocean.app/backend"
 /* eslint-disable */
 class Analysis {
-  constructor(baseURL = "http://localhost:8082/venlab") {
+  constructor(baseURL = backendUrl + "/venlab") {
     this.api = axios.create({ baseURL });
   }
 

@@ -16,25 +16,48 @@ export default createVuetify({
             light: {
                 dark: false,
                 colors: {
-                    primary: '#1976D2',
-                    secondary: '#424242',
-                    accent: '#82B1FF',
-                    error: '#FF5252',
-                    info: '#2196F3',
-                    success: '#4CAF50',
+                    // Core
+                    primary: '#E44C8B',      // Rose pink
+                    secondary: '#F2A1C7',    // Soft blush
+                    accent: '#D81B60',       // Strong accent
+
+                    // UI surfaces
+                    background: '#FFF7FA',   // Very light pink-white
+                    surface: '#FFFFFF',
+
+                    // States
+                    error: '#E53935',
+                    info: '#4A90E2',
+                    success: '#43A047',
                     warning: '#FB8C00',
+
+                    // Text helpers (optional but nice)
+                    'on-background': '#1F1F1F',
+                    'on-surface': '#1F1F1F',
                 },
             },
+
             dark: {
                 dark: true,
                 colors: {
-                    primary: '#2196F3',
-                    secondary: '#424242',
-                    accent: '#FF4081',
-                    error: '#FF5252',
-                    info: '#2196F3',
-                    success: '#4CAF50',
-                    warning: '#FB8C00',
+                    // Core
+                    primary: '#F48FB1',      // Soft rose (easy on eyes)
+                    secondary: '#AD1457',    // Deep wine
+                    accent: '#FF5C8D',       // Vibrant pink accent
+
+                    // UI surfaces
+                    background: '#141114',   // Warm near-black
+                    surface: '#1E1A1E',
+
+                    // States
+                    error: '#EF5350',
+                    info: '#64B5F6',
+                    success: '#66BB6A',
+                    warning: '#FFB74D',
+
+                    // Text helpers
+                    'on-background': '#F5E9EF',
+                    'on-surface': '#F5E9EF',
                 },
             },
         },

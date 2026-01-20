@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <v-app-bar color="primary" dark>
-      <v-app-bar-title>Vue Data Table</v-app-bar-title>
+      <v-app-bar-title>Venlab Tables</v-app-bar-title>
       <v-spacer></v-spacer>
       <v-switch
           v-model="isDark"
@@ -13,25 +13,49 @@
     </v-app-bar>
 
     <v-main>
-      <!-- Buttons -->
-      <v-row class="pa-4" dense>
-        <v-btn
-            v-for="table in tables"
-            :key="table.key"
-            class="ma-2"
-            color="secondary"
-            @click="loadTable(table.key)"
-        >
-          {{ table.label }}
-        </v-btn>
-      </v-row>
+      <!-- Login-Bereich -->
+      <div v-if="!isLoggedIn" class="pa-4">
+        <h2>Login</h2>
+        <v-form @submit.prevent="onLogin">
+          <v-text-field
+              v-model="username"
+              label="Benutzername"
+              required
+          />
+          <v-text-field
+              v-model="password"
+              label="Passwort"
+              type="password"
+              required
+          />
+          <v-btn type="submit" color="primary" class="mt-2">
+            Einloggen
+          </v-btn>
+        </v-form>
+      </div>
 
-      <!-- DataTable -->
-      <DataTable
-          v-if="tableData.items.length"
-          :items="tableData.items"
-          :headers="tableData.headers"
-      />
+      <!-- Tabellen nur wenn eingeloggt -->
+      <div v-else>
+        <!-- Buttons -->
+        <v-row class="pa-4" dense>
+          <v-btn
+              v-for="table in tables"
+              :key="table.key"
+              class="ma-2"
+              color="secondary"
+              @click="loadTable(table.key)"
+          >
+            {{ table.label }}
+          </v-btn>
+        </v-row>
+
+        <!-- DataTable -->
+        <DataTable
+            v-if="tableData.items.length"
+            :items="tableData.items"
+            :headers="tableData.headers"
+        />
+      </div>
     </v-main>
   </v-app>
 </template>
@@ -41,7 +65,6 @@ import { ref, watch } from 'vue'
 import { useTheme } from 'vuetify'
 import DataTable from './components/DataTable.vue'
 
-// Axios-Klassen
 import Analysis from '../api/Analysis'
 import Box from '../api/Box'
 import BoxPos from '../api/Boxpos'
@@ -57,7 +80,16 @@ export default {
     const isDark = ref(false)
     const tableData = ref({ items: [], headers: [] })
 
-    // Mapping: Button → Axios-Klasse
+    const username = ref('')
+    const password = ref('')
+    const isLoggedIn = ref(false)
+
+    const onLogin = () => {
+      console.log('login', username.value, password.value)
+      isLoggedIn.value = true
+      loadTable('analysis')
+    }
+
     const apiMap = {
       analysis: new Analysis(),
       box: new Box(),
@@ -81,12 +113,10 @@ export default {
           .getAll()
           .then(response => {
             const data = response.data || []
-
             const headers = Object.keys(data[0] || {}).map(k => ({
               title: k,
               value: k
             }))
-
             tableData.value = { items: data, headers }
           })
           .catch(err => {
@@ -94,9 +124,6 @@ export default {
             tableData.value = { items: [], headers: [] }
           })
     }
-
-    // initial table
-    loadTable('analysis')
 
     watch(isDark, val => {
       theme.global.name.value = val ? 'dark' : 'light'
@@ -106,7 +133,11 @@ export default {
       isDark,
       tables,
       tableData,
-      loadTable
+      loadTable,
+      username,
+      password,
+      isLoggedIn,
+      onLogin
     }
   }
 }

@@ -12,18 +12,22 @@
     "@mdi/font": "7.4.47",
     "axios": "^1.12.2",
     "core-js": "^3.46.0",
+    "register-service-worker": "^1.7.2",
     "roboto-fontface": "*",
     "vue": "^3.5.22",
     "vuetify": "^3.10.6",
-    "webfontloader": "^1.6.28"
+    "webfontloader": "^1.6.28",
+    "workbox-webpack-plugin": "^7.4.0"
   },
   "devDependencies": {
     "@babel/eslint-parser": "^7.28.4",
     "@vue/cli-plugin-babel": "~5.0.9",
     "@vue/cli-plugin-eslint": "~5.0.9",
+    "@vue/cli-plugin-pwa": "~5.0.0",
     "@vue/cli-service": "~5.0.9",
     "eslint": "^8.57.0",
     "eslint-plugin-vue": "^9.28.0",
+    "vite-plugin-pwa": "^1.2.0",
     "vue-cli-plugin-vuetify": "~2.5.8",
     "webpack-plugin-vuetify": "^3.1.2"
   },
