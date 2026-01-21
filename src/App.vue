@@ -14,6 +14,7 @@
 
     <v-main>
       <!-- Login-Bereich -->
+      <!--
       <div v-if="!isLoggedIn" class="pa-4">
         <h2>Login</h2>
         <v-form @submit.prevent="onLogin">
@@ -32,10 +33,10 @@
             Einloggen
           </v-btn>
         </v-form>
-      </div>
+      </div>-->
 
       <!-- Tabellen nur wenn eingeloggt -->
-      <div v-else>
+      <!--<div v-else>-->
         <!-- Buttons -->
         <v-row class="pa-4" dense>
           <v-btn
@@ -55,7 +56,7 @@
             :items="tableData.items"
             :headers="tableData.headers"
         />
-      </div>
+      <!--</div>-->
     </v-main>
   </v-app>
 </template>
@@ -80,14 +81,15 @@ export default {
     const isDark = ref(false)
     const tableData = ref({ items: [], headers: [] })
 
-    const username = ref('')
-    const password = ref('')
-    const isLoggedIn = ref(false)
+    //const username = ref('')
+    //const password = ref('')
+    //const isLoggedIn = ref(false)
 
-    const onLogin = () => {
+    /*
+    * const onLogin = () => {
       isLoggedIn.value = true
       loadTable('analysis')
-    }
+    }*/
 
     const apiMap = {
       analysis: new Analysis(),
@@ -132,11 +134,13 @@ export default {
       isDark,
       tables,
       tableData,
-      loadTable,
-      username,
-      password,
-      isLoggedIn,
-      onLogin
+      loadTable
+      /**
+       * username,
+       *       password,
+       *       isLoggedIn,
+       *       onLogin
+       */
     }
   }
 }
