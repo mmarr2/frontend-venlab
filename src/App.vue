@@ -104,7 +104,7 @@ export default {
       { label: 'Analysis', key: 'analysis' },
       { label: 'Box', key: 'box' },
       { label: 'BoxPos', key: 'boxpo' },
-      { label: 'Log', key: 'logS' },
+      { label: 'Log', key: 'log' },
       { label: 'Sample', key: 'sample' },
       { label: 'Threshold', key: 'threshold' }
     ]
