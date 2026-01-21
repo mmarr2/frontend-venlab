@@ -1,5 +1,5 @@
 import axios from "axios";
-const backendUrl = "https://miristschwindelig-pnu4i.ondigitalocean.app/backend"
+const backendUrl = "1delig-pnu4i.ondigitalocean.app/backend"
 /* eslint-disable */
 class Analysis {
   constructor(baseURL = backendUrl + "/venlab") {

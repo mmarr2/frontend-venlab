@@ -85,7 +85,6 @@ export default {
     const isLoggedIn = ref(false)
 
     const onLogin = () => {
-      console.log('login', username.value, password.value)
       isLoggedIn.value = true
       loadTable('analysis')
     }
